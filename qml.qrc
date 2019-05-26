@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>setting.png</file>
+        <file>page/SettingPage.qml</file>
+        <file>unit/ButtonItem.qml</file>
+        <file>opened-folder.png</file>
+        <file>unit/ButtonTextItem.qml</file>
+    </qresource>
+</RCC>

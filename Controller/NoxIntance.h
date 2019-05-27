@@ -8,6 +8,7 @@ class NoxIntance : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString instanceName READ instanceName CONSTANT)
+    Q_PROPERTY(bool isRunning READ isRunning WRITE setIsRunning NOTIFY isRunningChanged)
 
 public:
     explicit NoxIntance(QObject *parent, QString instanceName, int indexOf);
@@ -15,18 +16,17 @@ public:
 
     QString instanceName() const;
     bool isRunning() const;
+    void setIsRunning(const bool data);
     int indexOf() const;
-
-    void startInstance();
-    void quitInstance();
 
 private:
     QString m_instanceName;
-    bool m_isRunning;
     int m_indexOf;
+    bool m_isRunning;
 
 signals:
     void checkEndScript();
+    void isRunningChanged();
 
 private slots:
     void onCheckEndScript();

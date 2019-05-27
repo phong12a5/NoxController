@@ -19,6 +19,20 @@ bool NoxCommand::runNoxCommand(QString cmd)
     }
 }
 
+QString NoxCommand::runNoxCommand_Str(QString cmd)
+{
+    LOG << "Cmd: " << cmd;
+    QProcess process;
+    process.setWorkingDirectory(APP_MODEL->noxIntallFolder());
+    process.start(cmd);
+    process.waitForFinished(-1);
+    if(process.readAllStandardError() != ""){
+        return QString(process.readAllStandardError());
+    }else{
+        return QString(process.readAllStandardOutput());
+    }
+}
+
 bool NoxCommand::lunchInstance(QString instanceName)
 {
     LOG << instanceName;

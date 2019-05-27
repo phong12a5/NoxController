@@ -65,7 +65,7 @@ void NoxIntance::onCheckEndScript()
 
     QString output = "";
     while (output != "true") {
-        output = NoxCommand::runNoxCommand_Str("NoxConsole.exe adb -name:NoxPlayer -command:\"-s [ -f /storage/emulated/legacy/DCIM/endScript0.st ] && echo true || echo false\"");
+        output = NoxCommand::runNoxCommand_Str("NoxConsole.exe adb -name:NoxPlayer -command:\"[ -f /storage/emulated/legacy/DCIM/endScript0.st ] && echo true || echo false\"");
 //        LOG << "Output: " << output;
         delay(2000);
     }

@@ -49,7 +49,7 @@ Window {
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
-                    AppModel.requestToLaunchInstance(modelData.instanceName)
+                    modelData.isRunning = !modelData.isRunning
                 }
             }
         }

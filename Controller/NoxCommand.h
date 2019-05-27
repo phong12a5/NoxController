@@ -10,6 +10,7 @@ class NoxCommand : public QObject
 
 public:
     static bool runNoxCommand(QString cmd);
+    static QString runNoxCommand_Str(QString cmd);
     static bool lunchInstance(QString instanceName);
     static bool installPackage(QString instanceName, QString apkPath);
     static bool runApp(QString instanceName, QString packageName);

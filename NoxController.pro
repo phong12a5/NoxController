@@ -18,11 +18,13 @@ SOURCES += \
         main.cpp \
     AppMain.cpp \
     AppModel.cpp \
+    AppController.cpp \
     Controller/NoxCommand.cpp \
 #    MultiThread/MyThread.cpp \
 #    MultiThread/MyWorker.cpp
-    Controller/AppController.cpp \
-    Controller/NoxIntance.cpp
+    Controller/NoxIntance.cpp \
+    Controller/NoxThread.cpp \
+    Controller/NoxRunner.cpp
 
 RESOURCES += qml.qrc
 
@@ -41,8 +43,10 @@ HEADERS += \
     AppMain.h \
     AppModel.h \
     AppDefines.h \
+    AppController.h \
     Controller/NoxCommand.h \
 #    MultiThread/MyThread.h \
 #    MultiThread/MyWorker.h
-    Controller/AppController.h \
-    Controller/NoxIntance.h
+    Controller/NoxIntance.h \
+    Controller/NoxThread.h \
+    Controller/NoxRunner.h

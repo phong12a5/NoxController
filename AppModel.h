@@ -5,6 +5,7 @@
 #include "AppDefines.h"
 #include "Controller/NoxCommand.h"
 #include "Controller/NoxIntance.h"
+#include <QMutex>
 
 class AppModel : public QObject
 {
@@ -33,6 +34,9 @@ public:
     bool isLaunchMutiTask() const;
     void setIsLaunchMutiTask(const bool data);
 
+    int latestRunningInstance() const;
+    void setLatestRunningInstance(const int data);
+
 public:
     Q_INVOKABLE void requestToLaunchInstance(QString instanceName);
 
@@ -42,6 +46,10 @@ signals:
     void amountOfThreadChanged();
     void isLaunchMutiTaskChanged();
 
+    void reInitDeviceList();
+    void loadConfig();
+    void saveConfig();
+
 private:
     static AppModel* m_instance;
 
@@ -49,6 +57,7 @@ private:
     QList<QObject*> m_devicesList;
     uint m_amountOfThread;
     bool m_isLaunchMutiTask;
+    int m_latestRunningInstance;
 
 public slots:
 };

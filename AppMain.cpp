@@ -7,6 +7,10 @@
 AppMain::AppMain(QObject *parent) : QObject(parent)
 {
     m_engine = nullptr;
+
+    connect(APP_MODEL,SIGNAL(reInitDeviceList()),this,SLOT(initDevicesList()));
+    connect(APP_MODEL,SIGNAL(saveConfig()),this,SLOT(onSaveConfig()));
+    connect(APP_MODEL,SIGNAL(loadConfig()),this,SLOT(onLoadConfig()));
 }
 
 AppMain::~AppMain()
@@ -19,32 +23,52 @@ void AppMain::initApplication(QQmlApplicationEngine* engine)
     LOG;
     m_engine = engine;
     m_engine->rootContext()->setContextProperty("AppModel",APP_MODEL);
-    this->loadConfigSetting();
-    this->initDevicesList();
+    this->onLoadConfig();
+    if(APP_MODEL->noxIntallFolder() != "")
+        this->initDevicesList();
     APP_CTRL->initAppController();
 
     QObject::connect(APP_MODEL,SIGNAL(isLaunchMutiTaskChanged()),this,SLOT(requestToStartStopMultiTask()));
 }
 
-void AppMain::loadConfigSetting()
+void AppMain::onLoadConfig()
 {
     LOG;
     QFile configFile(INSTALL_FOLDER_NAME);
     if(configFile.exists()){
-        if(!configFile.open(QIODevice::ReadOnly | QIODevice::Text)){
-            APP_MODEL->setNoxIntallFolder(QString(""));
-        }else{
-            while (!configFile.atEnd()) {
-                QByteArray line = configFile.readLine();
-                if(QString(line).contains(INSTALL_FOLDER_PREFIX)){
-                    int index = QString(line).indexOf(INSTALL_FOLDER_PREFIX);
-                    APP_MODEL->setNoxIntallFolder(QString(line).mid(index + QString(INSTALL_FOLDER_PREFIX).length()),true);
-                }
+        QJsonObject config = this->loadJson(CONFIG_FILE_NAME).object();
+        APP_MODEL->setNoxIntallFolder(config[INSTALL_FOLDER_FIELD].toString());
+        QJsonObject noxListObj = config[NOX_LIST_FIELD].toObject();
+        if(!noxListObj.isEmpty()){
+            for(int i = 0; i < APP_MODEL->devicesList().length(); i++){
+                NoxIntance* noxInstance = dynamic_cast<NoxIntance*>(APP_MODEL->devicesList().at(i));
+                QString instanceName = noxInstance->instanceName();
+                bool state = noxListObj[instanceName].toBool();
+                noxInstance->setInstalledApp(state);
             }
+        }else{
+            LOG << "[AppMain]" << " appDataObj is empty";
         }
+
     }else{
-        APP_MODEL->setNoxIntallFolder(QString(""));
+        // Do nothing
     }
+}
+
+void AppMain::onSaveConfig()
+{
+    LOG;
+    QJsonObject config;
+    QJsonObject noxConfigList;
+
+    for(int i = 0; i < APP_MODEL->devicesList().length(); i++){
+        NoxIntance* instance = dynamic_cast<NoxIntance*>(APP_MODEL->devicesList().at(i));;
+        noxConfigList[instance->instanceName()] = instance->installedApp();
+    }
+    config[INSTALL_FOLDER_FIELD] = APP_MODEL->noxIntallFolder();
+    config[NOX_LIST_FIELD] = noxConfigList;
+
+    this->saveJson(QJsonDocument(config),CONFIG_FILE_NAME);
 }
 
 void AppMain::initDevicesList()
@@ -72,6 +96,23 @@ void AppMain::initDevicesList()
         }
     }
 }
+
+QJsonDocument AppMain::loadJson(QString fileName)
+{
+    LOG << "[AppMain]";
+    QFile jsonFile(fileName);
+    jsonFile.open(QFile::ReadOnly);
+    return QJsonDocument().fromJson(jsonFile.readAll());
+}
+
+void AppMain::saveJson(QJsonDocument document, QString fileName)
+{
+    LOG << "[AppMain]";
+    QFile jsonFile(fileName);
+    jsonFile.open(QFile::WriteOnly);
+    jsonFile.write(document.toJson());
+}
+
 
 void AppMain::requestToStartStopMultiTask()
 {

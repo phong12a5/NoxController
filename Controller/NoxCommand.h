@@ -10,15 +10,17 @@ class NoxCommand : public QObject
 
 public:
     static bool runNoxCommand(QString cmd);
-    static QString runNoxCommand_Str(QString cmd);
     static bool lunchInstance(QString instanceName);
     static bool installPackage(QString instanceName, QString apkPath);
     static bool runApp(QString instanceName, QString packageName);
     static bool addInstance(QString instanceName, int androidVersion);
     static bool nox_adb_command(QString instanceName, QString cmd);
+    static QString nox_adb_command_str(QString instanceName, QString cmd);
     static bool quitInstance(QString instanceName);
     static bool quitAll();
     static bool rebootInstance(QString instanceName);
+    static bool checkConnection(QString instanceName);
+
 
 signals:
 

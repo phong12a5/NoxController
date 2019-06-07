@@ -7,7 +7,9 @@
 #include <QProcess>
 #include "AppDefines.h"
 #include "AppModel.h"
-#include "Controller/AppController.h"
+#include "AppController.h"
+#include <QJsonObject>
+#include <QJsonDocument>
 
 class AppMain : public QObject
 {
@@ -18,17 +20,20 @@ public:
 
     void initApplication(QQmlApplicationEngine* engine);
 
+
 private:
-    void loadConfigSetting();
-    void initDevicesList();
+
+    QJsonDocument loadJson(QString fileName);
+    void saveJson(QJsonDocument document, QString fileName);
 
 private:
     QQmlApplicationEngine* m_engine;
 
-signals:
-
 public slots:
     void requestToStartStopMultiTask();
+    void onSaveConfig();
+    void onLoadConfig();
+    void initDevicesList();
 };
 
 #endif // APPMAIN_H

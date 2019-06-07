@@ -4,6 +4,7 @@
 #include <QObject>
 #include "AppDefines.h"
 #include "AppModel.h"
+#include "Controller/NoxThread.h"
 
 class AppController : public QObject
 {
@@ -20,10 +21,14 @@ public:
 
 private:
     static AppController* m_instance;
+
+    QList<NoxThread* > m_noxThreadList;
+
 signals:
 
 public slots:
     void onDevicesListChanged();
+    void aMissionCompleted(NoxThread* threadAdd = nullptr);
 };
 
 #endif // APPCONTROLLER_H

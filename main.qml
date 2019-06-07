@@ -45,13 +45,6 @@ Window {
                 anchors.bottom: parent.bottom
                 color: "grey"
             }
-
-            MouseArea{
-                anchors.fill: parent
-                onClicked: {
-                    modelData.isRunning = !modelData.isRunning
-                }
-            }
         }
     }
 

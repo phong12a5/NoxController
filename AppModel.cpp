@@ -1,4 +1,5 @@
 #include "AppModel.h"
+#include "AppMain.h"
 
 AppModel* AppModel::m_instance = nullptr;
 
@@ -7,6 +8,7 @@ AppModel::AppModel(QObject *parent) : QObject(parent)
     m_noxIntallFolder = "";
     m_amountOfThread = 1;
     m_isLaunchMutiTask = false;
+    m_latestRunningInstance = -1;
 }
 
 AppModel *AppModel::instance()
@@ -26,10 +28,15 @@ void AppModel::setNoxIntallFolder(const QString path, bool standardPath)
 {
     if(standardPath == false){
         LOG << path.mid(8);
-        if(m_noxIntallFolder != path.mid(8)){
-            m_noxIntallFolder = path.mid(8);
-            emit noxIntallFolderChanged();
+        if(QFile(path.mid(8) + "/NoxConsole.exe").exists()){
+            if(m_noxIntallFolder != path.mid(8) ){
+                m_noxIntallFolder = path.mid(8);
+                emit noxIntallFolderChanged();
+            }
+        }else{
+            LOG << "Invalid folder.";
         }
+
     }else{
         LOG << path;
         if(m_noxIntallFolder != path){
@@ -38,12 +45,8 @@ void AppModel::setNoxIntallFolder(const QString path, bool standardPath)
         }
     }
 
-    QFile file(INSTALL_FOLDER_NAME);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-        return;
-
-    QTextStream out(&file);
-    out << INSTALL_FOLDER_PREFIX << m_noxIntallFolder;
+    emit reInitDeviceList();
+    emit saveConfig();
 }
 
 QList<QObject*> AppModel::devicesList() const
@@ -84,6 +87,25 @@ void AppModel::setIsLaunchMutiTask(const bool data)
     if(m_isLaunchMutiTask != data){
         m_isLaunchMutiTask = data;
         emit isLaunchMutiTaskChanged();
+    }
+}
+
+int AppModel::latestRunningInstance() const
+{
+    return m_latestRunningInstance;
+}
+
+void AppModel::setLatestRunningInstance(const int data)
+{
+    if(m_latestRunningInstance != data){
+        QMutex mutex;
+        mutex.lock();
+        if(data >= this->devicesList().length()){
+            m_latestRunningInstance = 0;
+        }else{
+            m_latestRunningInstance = data;
+        }
+        mutex.unlock();
     }
 }
 

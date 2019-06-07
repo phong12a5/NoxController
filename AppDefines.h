@@ -8,8 +8,14 @@
 #define delay(milescond)    QTest::qSleep(milescond)
 
 #define INSTALL_FOLDER_PREFIX   "installation-folder:"
-#define INSTALL_FOLDER_NAME     "config.txt"
+#define INSTALL_FOLDER_NAME     "config.json"
 
-#define ENDSCRIPT_PATH          "/storage/emulated/legacy/DCIM/"
+#define CONFIG_FILE_NAME        "config.json"
+
+#define ENDSCRIPT_PATH          "/sdcard/DCIM/"
+#define APK_FILENAME            "android-build-debug.apk"
+
+#define INSTALL_FOLDER_FIELD    "installation_folder"
+#define NOX_LIST_FIELD          "devices_list_config"
 
 #endif // APPDEFINES_H

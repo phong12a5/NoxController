@@ -30,15 +30,6 @@ void NoxIntance::setIsRunning(const bool data)
     if(data != m_isRunning){
         m_isRunning = data;
         emit isRunningChanged();
-        if(data){
-            if(NoxCommand::lunchInstance(this->instanceName())){
-                LOG << this->instanceName() << " is started";
-            }
-        }else{
-            if(NoxCommand::quitInstance(this->instanceName())){
-                LOG << this->instanceName() << " is stopped";
-            }
-        }
     }
 }
 

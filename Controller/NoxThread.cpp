@@ -17,7 +17,7 @@ NoxThread::NoxThread(QObject *parent) : QObject(parent)
 
 NoxThread::~NoxThread()
 {
-    LOG;
+    LOG << m_noxInstance->instanceName();
     m_workerThread->quit();
     m_workerThread->wait();
     if(m_noxInstance) m_noxInstance->setIsRunning(false);
@@ -34,10 +34,10 @@ void NoxThread::setNoxInstance()
 
         m_noxInstance = dynamic_cast<NoxIntance*>(APP_MODEL->devicesList().at(APP_MODEL->latestRunningInstance()));
         m_noxInstance->setIsRunning(true);
-        m_Worker = new NoxRunner(m_noxInstance->instanceName(),m_noxInstance->indexOf());
+        m_Worker = new NoxRunner(m_noxInstance->instanceName(),m_noxInstance->indexOf(),m_noxInstance->installedApp());
 
         m_Worker->moveToThread(m_workerThread);
-        connect(this, &NoxThread::deleteObj, m_Worker, &NoxRunner::deleteLater);
+        connect(m_workerThread, &QThread::finished, m_Worker, &NoxRunner::deleteLater);
         connect(this, &NoxThread::operate, m_Worker, &NoxRunner::run);
         connect(m_Worker, &NoxRunner::finished, this, &NoxThread::finishedATask);
         m_workerThread->start();
@@ -48,7 +48,10 @@ void NoxThread::setNoxInstance()
 
 void NoxThread::finishedATask()
 {
+    if(!m_noxInstance->installedApp()){
+        m_noxInstance->setInstalledApp(true);
+        APP_MODEL->saveConfig();
+    }
     m_noxInstance->setIsRunning(false);
-    emit deleteObj();
     emit missionCompleted(this);
 }

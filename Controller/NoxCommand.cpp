@@ -6,6 +6,7 @@
 
 bool NoxCommand::runNoxCommand(QString cmd)
 {
+    LOG << "Cmd: " << cmd;
     QProcess process;
     process.setWorkingDirectory(APP_MODEL->noxIntallFolder());
     process.start(cmd);
@@ -14,7 +15,6 @@ bool NoxCommand::runNoxCommand(QString cmd)
         LOG << process.readAllStandardError();
         return false;
     }else{
-        LOG << process.readAllStandardOutput();
         return true;
     }
 }

@@ -24,8 +24,6 @@ void AppMain::initApplication(QQmlApplicationEngine* engine)
     m_engine = engine;
     m_engine->rootContext()->setContextProperty("AppModel",APP_MODEL);
     this->onLoadConfig();
-    if(APP_MODEL->noxIntallFolder() != "")
-        this->initDevicesList();
     APP_CTRL->initAppController();
 
     QObject::connect(APP_MODEL,SIGNAL(isLaunchMutiTaskChanged()),this,SLOT(requestToStartStopMultiTask()));
@@ -37,19 +35,25 @@ void AppMain::onLoadConfig()
     QFile configFile(INSTALL_FOLDER_NAME);
     if(configFile.exists()){
         QJsonObject config = this->loadJson(CONFIG_FILE_NAME).object();
-        APP_MODEL->setNoxIntallFolder(config[INSTALL_FOLDER_FIELD].toString());
-        QJsonObject noxListObj = config[NOX_LIST_FIELD].toObject();
-        if(!noxListObj.isEmpty()){
-            for(int i = 0; i < APP_MODEL->devicesList().length(); i++){
-                NoxIntance* noxInstance = dynamic_cast<NoxIntance*>(APP_MODEL->devicesList().at(i));
-                QString instanceName = noxInstance->instanceName();
-                bool state = noxListObj[instanceName].toBool();
-                noxInstance->setInstalledApp(state);
-            }
+        APP_MODEL->setNoxIntallFolder(config[INSTALL_FOLDER_FIELD].toString(),true);
+        if(APP_MODEL->noxIntallFolder() == "")
+        {
+            LOG << "Nox installation folder has not set yet";
         }else{
-            LOG << "[AppMain]" << " appDataObj is empty";
+            this->initDevicesList();
+            QJsonObject noxListObj = config[NOX_LIST_FIELD].toObject();
+            if(!noxListObj.isEmpty()){
+                for(int i = 0; i < APP_MODEL->devicesList().length(); i++){
+                    NoxIntance* noxInstance = dynamic_cast<NoxIntance*>(APP_MODEL->devicesList().at(i));
+                    QString instanceName = noxInstance->instanceName();
+                    bool state = noxListObj[instanceName].toBool();
+                    noxInstance->setInstalledApp(state);
+                }
+            }else{
+                LOG << "[AppMain]" << " appDataObj is empty";
+            }
         }
-
+        this->onSaveConfig();
     }else{
         // Do nothing
     }

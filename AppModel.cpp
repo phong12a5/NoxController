@@ -26,23 +26,23 @@ QString AppModel::noxIntallFolder() const
 
 void AppModel::setNoxIntallFolder(const QString path, bool standardPath)
 {
-    if(standardPath == false){
-        LOG << path.mid(8);
-        if(QFile(path.mid(8) + "/NoxConsole.exe").exists()){
-            if(m_noxIntallFolder != path.mid(8) ){
-                m_noxIntallFolder = path.mid(8);
-                emit noxIntallFolderChanged();
-            }
-        }else{
-            LOG << "Invalid folder.";
-        }
+    QString tmp_path = path;
 
-    }else{
-        LOG << path;
-        if(m_noxIntallFolder != path){
-            m_noxIntallFolder = path;
+    if(standardPath == false)
+        tmp_path = path.mid(8);
+    else
+        tmp_path = path;
+
+    LOG << "path: " << tmp_path;
+
+    if(QFile(tmp_path + "/NoxConsole.exe").exists()){
+        if(m_noxIntallFolder != tmp_path ){
+            m_noxIntallFolder = tmp_path;
             emit noxIntallFolderChanged();
         }
+    }else{
+        LOG << "Invalid folder.";
+        return;
     }
 
     emit reInitDeviceList();

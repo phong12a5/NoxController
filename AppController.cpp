@@ -32,9 +32,9 @@ void AppController::startMultiTask()
 void AppController::stopMultiTask()
 {
     LOG;
-    for(int i = 0; i < m_noxThreadList.length(); i++){
-        delete m_noxThreadList.at(i);
-        m_noxThreadList.removeAt(i);
+    while (!m_noxThreadList.isEmpty()) {
+        delete m_noxThreadList.at(0);
+        m_noxThreadList.removeAt(0);
     }
 }
 

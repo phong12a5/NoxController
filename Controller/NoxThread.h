@@ -24,7 +24,6 @@ private:
 
 signals:
     void operate();
-    void deleteObj();
     void missionCompleted(NoxThread*);
 
 public slots:

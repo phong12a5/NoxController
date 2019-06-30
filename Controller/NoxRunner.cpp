@@ -5,7 +5,8 @@
 NoxRunner::NoxRunner(QString instanceName, int index, bool installApp):
     m_instanceName(instanceName),
     m_index(index),
-    m_installApp(installApp)
+    m_installApp(installApp),
+    m_setIsNoxFile(false)
 {
 
 }
@@ -44,7 +45,12 @@ void NoxRunner::onCheckConnection()
     LOG;
     if (NoxCommand::checkConnection(m_instanceName) && !m_checkEndScriptTimer->isActive()){
         // Remove endScriptFile
-        QString endScptNameFile = QString("endScript%1.st").arg(m_index);
+        if(!m_setIsNoxFile){
+            m_setIsNoxFile = true;
+            NoxCommand::nox_adb_command(m_instanceName,QString("shell touch %1isNox.st").arg(ISNOX_PATH));
+        }
+
+        QString endScptNameFile = ENDSCRIPT_FILENAME;
         QString endScptNamePath = ENDSCRIPT_PATH + endScptNameFile;
         NoxCommand::nox_adb_command(m_instanceName,QString("shell rm %1").arg(endScptNamePath));
         m_checkEndScriptTimer->start();
@@ -54,7 +60,7 @@ void NoxRunner::onCheckConnection()
 void NoxRunner::onCheckEnscript()
 {
     LOG;
-    QString endScptNameFile = QString("endScript%1.st").arg(m_index);
+    QString endScptNameFile = ENDSCRIPT_FILENAME;
     QString endScptNamePath = ENDSCRIPT_PATH + endScptNameFile;
     QString output = NoxCommand::nox_adb_command_str(m_instanceName,QString("shell [ -f %1 ] && echo true || echo false").arg(endScptNamePath)).simplified();
     if(output == "true"){

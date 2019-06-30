@@ -16,6 +16,7 @@ private:
     QString m_instanceName;
     int m_index;
     bool m_installApp;
+    bool m_setIsNoxFile;
     QTimer *m_checkConnectionTimer;
     QTimer *m_checkEndScriptTimer;
 

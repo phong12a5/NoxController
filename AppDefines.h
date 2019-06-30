@@ -12,7 +12,9 @@
 
 #define CONFIG_FILE_NAME        "config.json"
 
+#define ISNOX_PATH              "/sdcard/DCIM/"
 #define ENDSCRIPT_PATH          "/sdcard/DCIM/"
+#define ENDSCRIPT_FILENAME      "endScript.st"
 #define APK_FILENAME            "android-build-debug.apk"
 
 #define INSTALL_FOLDER_FIELD    "installation_folder"

@@ -15,6 +15,8 @@ class AppModel : public QObject
     Q_PROPERTY(QList<QObject*> devicesList READ devicesList WRITE setDevicesList NOTIFY devicesListChanged)
     Q_PROPERTY(uint amountOfThread READ amountOfThread WRITE setAmountOfThread NOTIFY amountOfThreadChanged)
     Q_PROPERTY(bool isLaunchMutiTask READ isLaunchMutiTask WRITE setIsLaunchMutiTask NOTIFY isLaunchMutiTaskChanged)
+    Q_PROPERTY(QString token READ token WRITE setToken NOTIFY tokenChanged)
+    Q_PROPERTY(int maxNumberThread READ maxNumberThread CONSTANT)
 
 private:
     explicit AppModel(QObject *parent = nullptr);
@@ -37,18 +39,31 @@ public:
     int latestRunningInstance() const;
     void setLatestRunningInstance(const int data);
 
+    QString token() const;
+    void setToken(QString data);
+
+    APP_CONFIG appConfig() const;
+    void setAppConfig(APP_CONFIG data);
+
+    int maxNumberThread() const;
+
 public:
-    Q_INVOKABLE void requestToLaunchInstance(QString instanceName);
+    Q_INVOKABLE void startProgram();
+    Q_INVOKABLE void stopProgarm();
 
 signals:
     void noxIntallFolderChanged();
     void devicesListChanged();
     void amountOfThreadChanged();
     void isLaunchMutiTaskChanged();
+    void tokenChanged();
 
     void reInitDeviceList();
     void loadConfig();
     void saveConfig();
+
+    void sigStartProgram();
+    void sigStoptProgram();
 
 private:
     static AppModel* m_instance;
@@ -58,6 +73,8 @@ private:
     uint m_amountOfThread;
     bool m_isLaunchMutiTask;
     int m_latestRunningInstance;
+    QString m_token;
+    APP_CONFIG m_appConfig;
 
 public slots:
 };

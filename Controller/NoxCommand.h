@@ -20,7 +20,7 @@ public:
     static bool quitAll();
     static bool rebootInstance(QString instanceName);
     static bool checkConnection(QString instanceName);
-
+    static bool coppyInstance(QString instanceName, QString fromInstanceName);
 
 signals:
 

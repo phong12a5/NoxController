@@ -20,4 +20,32 @@
 #define INSTALL_FOLDER_FIELD    "installation_folder"
 #define NOX_LIST_FIELD          "devices_list_config"
 
+#define API_SERVER              "https://api.autofarmer.xyz/api/"
+
+#define ANDROID_VERSION         5
+
+#define MAX_THREAD              2
+
+typedef struct app_config_struct {
+    int timeout;
+    int reset_3g;
+    QString debug_mode;
+    int user_type;
+    QString encryption;
+    int m_mobileCloneCount;
+    int m_noxCount;
+    int m_noxCloneCount;
+
+    app_config_struct(){
+        timeout = 30;
+        reset_3g = 10;
+        debug_mode = "test";
+        user_type = 0;
+        encryption = "00110001";
+        m_mobileCloneCount = 0;
+        m_noxCount = 5;
+        m_noxCloneCount = 0;
+    }
+} APP_CONFIG;
+
 #endif // APPDEFINES_H

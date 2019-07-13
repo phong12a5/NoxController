@@ -20,20 +20,21 @@ public:
 
     void initApplication(QQmlApplicationEngine* engine);
 
-
 private:
-
     QJsonDocument loadJson(QString fileName);
     void saveJson(QJsonDocument document, QString fileName);
 
 private:
     QQmlApplicationEngine* m_engine;
 
+    bool m_getAppConfig;
+
 public slots:
-    void requestToStartStopMultiTask();
     void onSaveConfig();
     void onLoadConfig();
     void initDevicesList();
+    void onStartProgram();
+    void onStoptProgram();
 };
 
 #endif // APPMAIN_H

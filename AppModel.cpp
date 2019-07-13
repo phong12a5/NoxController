@@ -9,6 +9,7 @@ AppModel::AppModel(QObject *parent) : QObject(parent)
     m_amountOfThread = 1;
     m_isLaunchMutiTask = false;
     m_latestRunningInstance = -1;
+    m_token = "00261f5687fee223f35e3c2080e167a8";
 }
 
 AppModel *AppModel::instance()
@@ -109,9 +110,42 @@ void AppModel::setLatestRunningInstance(const int data)
     }
 }
 
-void AppModel::requestToLaunchInstance(QString instanceName)
+QString AppModel::token() const
 {
-    NoxCommand::lunchInstance(instanceName);
+    return m_token;
+}
+
+void AppModel::setToken(QString data)
+{
+    if(m_token != data){
+        m_token = data;
+        emit tokenChanged();
+    }
+}
+
+APP_CONFIG AppModel::appConfig() const
+{
+    return m_appConfig;
+}
+
+void AppModel::setAppConfig(APP_CONFIG data)
+{
+    m_appConfig = data;
+}
+
+int AppModel::maxNumberThread() const
+{
+    return MAX_THREAD;
+}
+
+void AppModel::startProgram()
+{
+    emit sigStartProgram();
+}
+
+void AppModel::stopProgarm()
+{
+    emit sigStoptProgram();
 }
 
 

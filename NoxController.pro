@@ -20,11 +20,11 @@ SOURCES += \
     AppModel.cpp \
     AppController.cpp \
     Controller/NoxCommand.cpp \
-#    MultiThread/MyThread.cpp \
-#    MultiThread/MyWorker.cpp
     Controller/NoxIntance.cpp \
     Controller/NoxThread.cpp \
-    Controller/NoxRunner.cpp
+    Controller/NoxRunner.cpp \
+    Communication/WebAPI.cpp \
+    Processing/QAESEncryption.cpp
 
 RESOURCES += qml.qrc
 
@@ -45,8 +45,8 @@ HEADERS += \
     AppDefines.h \
     AppController.h \
     Controller/NoxCommand.h \
-#    MultiThread/MyThread.h \
-#    MultiThread/MyWorker.h
     Controller/NoxIntance.h \
     Controller/NoxThread.h \
-    Controller/NoxRunner.h
+    Controller/NoxRunner.h \
+    Communication/WebAPI.hpp \
+    Processing/QAESEncryption.hpp

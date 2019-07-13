@@ -1,16 +1,20 @@
 #include "AppMain.h"
 #include <QFile>
+#include <Communication/WebAPI.hpp>
 
-#define APP_MODEL AppModel::instance()
+#define APP_MODEL   AppModel::instance()
 #define APP_CTRL    AppController::instance()
+#define WEB_API     WebAPI::instance()
 
 AppMain::AppMain(QObject *parent) : QObject(parent)
 {
     m_engine = nullptr;
-
+    m_getAppConfig = false;
     connect(APP_MODEL,SIGNAL(reInitDeviceList()),this,SLOT(initDevicesList()));
     connect(APP_MODEL,SIGNAL(saveConfig()),this,SLOT(onSaveConfig()));
     connect(APP_MODEL,SIGNAL(loadConfig()),this,SLOT(onLoadConfig()));
+    connect(APP_MODEL,SIGNAL(sigStartProgram()),this,SLOT(onStartProgram()));
+    connect(APP_MODEL,SIGNAL(sigStoptProgram()),this,SLOT(onStoptProgram()));
 }
 
 AppMain::~AppMain()
@@ -25,8 +29,6 @@ void AppMain::initApplication(QQmlApplicationEngine* engine)
     m_engine->rootContext()->setContextProperty("AppModel",APP_MODEL);
     this->onLoadConfig();
     APP_CTRL->initAppController();
-
-    QObject::connect(APP_MODEL,SIGNAL(isLaunchMutiTaskChanged()),this,SLOT(requestToStartStopMultiTask()));
 }
 
 void AppMain::onLoadConfig()
@@ -101,6 +103,44 @@ void AppMain::initDevicesList()
     }
 }
 
+void AppMain::onStartProgram()
+{
+    LOG;
+    if(!m_getAppConfig){
+        WEB_API->getConfig();
+        QStringList devicesNameList;
+        foreach(QObject* deviceObj,APP_MODEL->devicesList()){
+            devicesNameList.append(dynamic_cast<NoxIntance* >(deviceObj)->instanceName());
+        }
+
+        if(devicesNameList.length() < APP_MODEL->appConfig().m_noxCount){
+            bool isAddedNewDevice = false;
+            for(int i = 1; i <= APP_MODEL->appConfig().m_noxCount; i++){
+                if(!devicesNameList.contains(QString("Device(%1)").arg(i))){
+                    isAddedNewDevice = true;
+                    if(i == 1){
+                        NoxCommand::addInstance(QString("Device(%1)").arg(i),ANDROID_VERSION);
+                    }else{
+                        NoxCommand::coppyInstance(QString("Device(%1)").arg(i),"Device(1)");
+                    }
+                }
+            }
+
+            if(isAddedNewDevice){
+                initDevicesList();
+            }
+        }
+    }
+
+    APP_CTRL->startMultiTask();
+}
+
+void AppMain::onStoptProgram()
+{
+    LOG;
+    APP_CTRL->stopMultiTask();
+}
+
 QJsonDocument AppMain::loadJson(QString fileName)
 {
     LOG << "[AppMain]";
@@ -115,14 +155,4 @@ void AppMain::saveJson(QJsonDocument document, QString fileName)
     QFile jsonFile(fileName);
     jsonFile.open(QFile::WriteOnly);
     jsonFile.write(document.toJson());
-}
-
-
-void AppMain::requestToStartStopMultiTask()
-{
-    LOG << (APP_MODEL->isLaunchMutiTask()? "Start" : "Stop");
-    if(APP_MODEL->isLaunchMutiTask())
-        APP_CTRL->startMultiTask();
-    else
-        APP_CTRL->stopMultiTask();
 }

@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     AppMain appMain;
     appMain.initApplication(&engine);
 
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty()){
         LOG << "rootObject is NULL";
     }

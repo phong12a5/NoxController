@@ -6,7 +6,8 @@ NoxRunner::NoxRunner(QString instanceName, int index, bool installApp):
     m_instanceName(instanceName),
     m_index(index),
     m_installApp(installApp),
-    m_setIsNoxFile(false)
+    m_setIsNoxFile(false),
+    isRunApp(false)
 {
 
 }
@@ -31,24 +32,33 @@ void NoxRunner::run()
     m_checkEndScriptTimer->setSingleShot(false);
     connect(m_checkEndScriptTimer,SIGNAL(timeout()),this,SLOT(onCheckEnscript()));
 
-    if(!m_installApp){
-        NoxCommand::installPackage(m_instanceName,QDir::currentPath() + "/" + APK_FILENAME);
-    }else{
-        NoxCommand::lunchInstance(m_instanceName);
-    }
+    NoxCommand::lunchInstance(m_instanceName);
 
     m_checkConnectionTimer->start();
 }
 
 void NoxRunner::onCheckConnection()
 {
-    LOG;
     if (NoxCommand::checkConnection(m_instanceName) && !m_checkEndScriptTimer->isActive()){
+        LOG << m_instanceName << " is connected";
         // Remove endScriptFile
         if(!m_setIsNoxFile){
             m_setIsNoxFile = true;
             NoxCommand::nox_adb_command(m_instanceName,QString("shell touch %1isNox.st").arg(ISNOX_PATH));
         }
+
+        // install app
+        if(!m_installApp){
+            NoxCommand::installPackage(m_instanceName,QDir::currentPath() + "/" + APK_FILENAME);
+            emit installedApp();
+        }
+
+        // Run app
+        if(!isRunApp){
+            NoxCommand::runApp(m_instanceName, FARM_PACKAGE_NAME);
+            isRunApp = true;
+        }
+
 
         QString endScptNameFile = ENDSCRIPT_FILENAME;
         QString endScptNamePath = ENDSCRIPT_PATH + endScptNameFile;

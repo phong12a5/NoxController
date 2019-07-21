@@ -28,6 +28,7 @@ signals:
 
 public slots:
     void finishedATask();
+    void onInstalledApp();
 };
 
 #endif // NOXTHREAD_H

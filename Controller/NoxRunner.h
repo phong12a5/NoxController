@@ -19,11 +19,13 @@ private:
     bool m_setIsNoxFile;
     QTimer *m_checkConnectionTimer;
     QTimer *m_checkEndScriptTimer;
+    bool isRunApp;
 
 public:
 
 signals:
     void finished();
+    void installedApp();
 
 public slots:
     void run();

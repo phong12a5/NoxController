@@ -7,6 +7,7 @@
 #define LOG qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "] >>"
 #define delay(milescond)    QTest::qSleep(milescond)
 
+#define FARM_PACKAGE_NAME       "org.qtproject.example.AutoFarm"
 #define INSTALL_FOLDER_PREFIX   "installation-folder:"
 #define INSTALL_FOLDER_NAME     "config.json"
 
@@ -24,7 +25,7 @@
 
 #define ANDROID_VERSION         5
 
-#define MAX_THREAD              2
+#define MAX_THREAD              30
 
 typedef struct app_config_struct {
     int timeout;

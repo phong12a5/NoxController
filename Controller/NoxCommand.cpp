@@ -45,7 +45,7 @@ bool NoxCommand::addInstance(QString instanceName, int androidVersion)
 {
     LOG << instanceName;
     NoxCommand::runNoxCommand(QString("NoxConsole.exe add -name:%1 -systemtype:%2").arg(instanceName).arg(androidVersion));
-    return NoxCommand::runNoxCommand(QString("Nox.exe -name:%1 -root:true -screen:vertical -lang:en -resolution:720x1280 -virtualKey:true -cpu:1 -quit").arg(instanceName));
+    return NoxCommand::runNoxCommand(QString("Nox.exe -name:%1 -root:true -screen:vertical -lang:en -screen:vertical -resolution:1080x1920 -dpi:480 -virtualKey:true -cpu:1 -quit").arg(instanceName));
 }
 
 bool NoxCommand::nox_adb_command(QString instanceName, QString cmd)

@@ -63,11 +63,13 @@ void WebAPI::getConfig()
             config.debug_mode = jsonObj["Debug_mode"].toString();
             config.user_type = jsonObj["User_type"].toInt();
             config.encryption = jsonObj["Encryption"].toString();
+            config.m_noxCount = jsonObj["NoxCount"].toInt();
             LOG << "config.timeout: " << config.timeout;
             LOG << "config.reset_3g: " << config.reset_3g;
             LOG << "config.debug_mode: " << config.debug_mode;
             LOG << "config.user_type: " << config.user_type;
             LOG << "config.encryption: " << config.encryption;
+            LOG << "config.noxCount: " << config.m_noxCount;
             MODEL->setAppConfig(config);
         }
     }else{

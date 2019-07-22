@@ -121,7 +121,6 @@ bool NoxCommand::checkConnection(QString instanceName)
             retVal = false;
         }
     }
-    LOG << retVal;
     return retVal;
 }
 

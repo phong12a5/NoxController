@@ -34,6 +34,7 @@ Window {
         width: root.width/4
         height: parent.height - 60
         boundsBehavior: Flickable.StopAtBounds
+        clip: true
         delegate: Item{
             width: parent.width
             height: 50
@@ -121,8 +122,10 @@ Window {
             text: selected? "Stop" : "Start"
             onClicked: {
                 selected = !selected
-                if(selected)
+                if(selected){
+                    AppModel.initializing = true
                     AppModel.startProgram()
+                }
                 else
                     AppModel.stopProgarm()
             }
@@ -167,6 +170,22 @@ Window {
         onButtonClicked: {
             settingPage.startAnimation()
         }
+    }
+
+    Rectangle{
+        id: initPopup
+        anchors.fill: parent
+        color: "black"
+        opacity: 0.8
+        visible: AppModel.initializing
+    }
+
+    Text {
+        text: qsTr("Initializing devices ........\nAnyway, Don't turn off application!")
+        color: "white"
+        anchors.centerIn: initPopup
+        font.pixelSize: 15
+        visible: AppModel.initializing
     }
 
     Component.onCompleted: {

@@ -118,6 +118,12 @@ void AppMain::onStartProgram()
                     isAddedNewDevice = true;
                     if(i == 1){
                         NoxCommand::addInstance(QString("Device(%1)").arg(i),ANDROID_VERSION);
+                        if(devicesNameList.isEmpty()){
+                            NoxCommand::lunchInstance("Device(1)");
+                            while(!NoxCommand::checkConnection("Device(1)"));
+                            NoxCommand::quitInstance("Device(1)");
+                            while(NoxCommand::checkConnection("Device(1)"));
+                        }
                     }else{
                         NoxCommand::coppyInstance(QString("Device(%1)").arg(i),"Device(1)");
                     }
@@ -125,11 +131,14 @@ void AppMain::onStartProgram()
                 }
             }
 
+            //
             if(isAddedNewDevice){
                 initDevicesList();
             }
         }
     }
+
+    APP_MODEL->setInitializing(false);
 
     APP_CTRL->startMultiTask();
 }

@@ -10,6 +10,7 @@ AppModel::AppModel(QObject *parent) : QObject(parent)
     m_isLaunchMutiTask = false;
     m_latestRunningInstance = -1;
     m_token = "00261f5687fee223f35e3c2080e167a8";
+    m_initializing = false;
 }
 
 AppModel *AppModel::instance()
@@ -136,6 +137,19 @@ void AppModel::setAppConfig(APP_CONFIG data)
 int AppModel::maxNumberThread() const
 {
     return MAX_THREAD;
+}
+
+bool AppModel::initializing() const
+{
+    return m_initializing;
+}
+
+void AppModel::setInitializing(bool data)
+{
+    if(m_initializing != data){
+        m_initializing = data;
+        emit initializingChanged();
+    }
 }
 
 void AppModel::startProgram()

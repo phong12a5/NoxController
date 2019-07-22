@@ -17,6 +17,7 @@ class AppModel : public QObject
     Q_PROPERTY(bool isLaunchMutiTask READ isLaunchMutiTask WRITE setIsLaunchMutiTask NOTIFY isLaunchMutiTaskChanged)
     Q_PROPERTY(QString token READ token WRITE setToken NOTIFY tokenChanged)
     Q_PROPERTY(int maxNumberThread READ maxNumberThread CONSTANT)
+    Q_PROPERTY(bool initializing READ initializing WRITE setInitializing NOTIFY initializingChanged)
 
 private:
     explicit AppModel(QObject *parent = nullptr);
@@ -47,6 +48,9 @@ public:
 
     int maxNumberThread() const;
 
+    bool initializing() const;
+    void setInitializing(bool data);
+
 public:
     Q_INVOKABLE void startProgram();
     Q_INVOKABLE void stopProgarm();
@@ -57,6 +61,7 @@ signals:
     void amountOfThreadChanged();
     void isLaunchMutiTaskChanged();
     void tokenChanged();
+    void initializingChanged();
 
     void reInitDeviceList();
     void loadConfig();
@@ -75,6 +80,7 @@ private:
     int m_latestRunningInstance;
     QString m_token;
     APP_CONFIG m_appConfig;
+    bool m_initializing;
 
 public slots:
 };

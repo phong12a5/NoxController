@@ -49,8 +49,9 @@ void NoxRunner::onCheckConnection()
 
         // install app
         if(!m_installApp){
-            NoxCommand::installPackage(m_instanceName,QDir::currentPath() + "/" + APK_FILENAME);
-            emit installedApp();
+            if(NoxCommand::installPackage(m_instanceName,QDir::currentPath() + "/" + APK_FILENAME)){
+                emit installedApp();
+            }
         }
 
         // Run app

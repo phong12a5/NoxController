@@ -84,14 +84,12 @@ void AppMain::initDevicesList()
         LOG << "Installation folder has not set up yet!";
         return;
     }else{
-        QProcess process;
-        process.setWorkingDirectory(APP_MODEL->noxIntallFolder());
-        process.start("NoxConsole.exe list");
-        process.waitForFinished(-1);
-        if(process.readAllStandardError() != ""){
-            LOG << "ERROR: " << process.readAllStandardError();
+        QString output, error;
+        NoxCommand::runNoxCommand("NoxConsole.exe", "list", output, error);
+        if(error != ""){
+            LOG << "ERROR: " << error;
         }else{
-            QStringList listNameDevices = QString(process.readAllStandardOutput()).split("\r\n",QString::SkipEmptyParts);
+            QStringList listNameDevices = QString(output).split("\r\n",QString::SkipEmptyParts);
             QList<QObject*> deviceList;
             deviceList.clear();
             for (int i = 0; i < listNameDevices.length(); i++) {
@@ -123,6 +121,7 @@ void AppMain::onStartProgram()
                     }else{
                         NoxCommand::coppyInstance(QString("Device(%1)").arg(i),"Device(1)");
                     }
+
                 }
             }
 

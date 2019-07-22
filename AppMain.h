@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QProcess>
 #include "AppDefines.h"
 #include "AppModel.h"
 #include "AppController.h"

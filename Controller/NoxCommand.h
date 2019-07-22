@@ -3,13 +3,15 @@
 
 #include <QObject>
 #include "AppDefines.h"
+#include <QProcess>
 
 class NoxCommand : public QObject
 {
     Q_OBJECT
 
 public:
-    static bool runNoxCommand(QString cmd);
+    static bool runNoxCommand(QString binaryName, QString args);
+    static bool runNoxCommand(QString binaryName, QString args, QString &output, QString &error);
     static bool lunchInstance(QString instanceName);
     static bool installPackage(QString instanceName, QString apkPath);
     static bool runApp(QString instanceName, QString packageName);

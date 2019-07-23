@@ -25,6 +25,7 @@ Window {
         anchors.horizontalCenter: deviceList.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 30
+        font.pixelSize: 20
     }
     ListView{
         id: deviceList
@@ -186,6 +187,7 @@ Window {
         anchors.centerIn: initPopup
         font.pixelSize: 15
         visible: AppModel.initializing
+        horizontalAlignment: Text.AlignHCenter
     }
 
     Component.onCompleted: {

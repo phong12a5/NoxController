@@ -121,6 +121,8 @@ void AppMain::onStartProgram()
                         if(devicesNameList.isEmpty()){
                             NoxCommand::lunchInstance("Device(1)");
                             while(!NoxCommand::checkConnection("Device(1)"));
+                            NoxCommand::setPropNox("Device(1)","persist.sys.language","en");
+                            NoxCommand::setPropNox("Device(1)","persist.sys.country","US");
                             NoxCommand::quitInstance("Device(1)");
                             while(NoxCommand::checkConnection("Device(1)"));
                         }

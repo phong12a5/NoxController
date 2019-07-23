@@ -47,19 +47,8 @@ void NoxRunner::onCheckConnection()
             NoxCommand::nox_adb_command(m_instanceName,QString("shell touch %1isNox.st").arg(ISNOX_PATH));
         }
 
-        // install app
-        if(!m_installApp){
-            if(NoxCommand::installPackage(m_instanceName,QDir::currentPath() + "/" + APK_FILENAME)){
-                emit installedApp();
-            }
-        }
-
         // Run app
-        if(!isRunApp){
-            NoxCommand::runApp(m_instanceName, FARM_PACKAGE_NAME);
-            isRunApp = true;
-        }
-
+        NoxCommand::runApp(m_instanceName, FARM_PACKAGE_NAME);
 
         QString endScptNameFile = ENDSCRIPT_FILENAME;
         QString endScptNamePath = ENDSCRIPT_PATH + endScptNameFile;
@@ -70,7 +59,7 @@ void NoxRunner::onCheckConnection()
 
 void NoxRunner::onCheckEnscript()
 {
-    LOG;
+//    LOG;
     QString endScptNameFile = ENDSCRIPT_FILENAME;
     QString endScptNamePath = ENDSCRIPT_PATH + endScptNameFile;
     QString output = NoxCommand::nox_adb_command_str(m_instanceName,QString("shell [ -f %1 ] && echo true || echo false").arg(endScptNamePath)).simplified();

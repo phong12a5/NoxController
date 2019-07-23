@@ -51,6 +51,9 @@ public:
     bool initializing() const;
     void setInitializing(bool data);
 
+    QString currentDir() const;
+    void setCurrentDir(QString data);
+
 public:
     Q_INVOKABLE void startProgram();
     Q_INVOKABLE void stopProgarm();
@@ -81,6 +84,7 @@ private:
     QString m_token;
     APP_CONFIG m_appConfig;
     bool m_initializing;
+    QString m_currentDir;
 
 public slots:
 };

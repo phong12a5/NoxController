@@ -27,6 +27,7 @@ void AppMain::initApplication(QQmlApplicationEngine* engine)
     LOG;
     m_engine = engine;
     m_engine->rootContext()->setContextProperty("AppModel",APP_MODEL);
+    APP_MODEL->setCurrentDir(QDir::currentPath());
     this->onLoadConfig();
     APP_CTRL->initAppController();
 }
@@ -123,13 +124,13 @@ void AppMain::onStartProgram()
                             while(!NoxCommand::checkConnection("Device(1)"));
                             NoxCommand::setPropNox("Device(1)","persist.sys.language","en");
                             NoxCommand::setPropNox("Device(1)","persist.sys.country","US");
+                            NoxCommand::runNoxCommand("nox_adb.exe", QString("install %1").arg(APP_MODEL->currentDir() + "/" + APK_FILENAME));
                             NoxCommand::quitInstance("Device(1)");
                             while(NoxCommand::checkConnection("Device(1)"));
                         }
                     }else{
                         NoxCommand::coppyInstance(QString("Device(%1)").arg(i),"Device(1)");
                     }
-
                 }
             }
 

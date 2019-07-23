@@ -84,7 +84,6 @@ QString NoxCommand::nox_adb_command_str(QString instanceName, QString cmd)
     }else{
         retVal = output;
     }
-    LOG << retVal;
     return  retVal;
 }
 

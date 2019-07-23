@@ -24,13 +24,22 @@ Window {
         text: qsTr("Devices List")
         anchors.horizontalCenter: deviceList.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: 30
-        font.pixelSize: 20
+        anchors.topMargin: 20
+        font.pixelSize: 17
     }
-    ListView{
-        id: deviceList
+
+    Rectangle{
+        id: bottomLine
+        width: root.width/4
+        height: 2
         anchors.top: parent.top
         anchors.topMargin: 60
+        color: "black"
+    }
+
+    ListView{
+        id: deviceList
+        anchors.top: bottomLine.bottom
         model: AppModel.devicesList
         width: root.width/4
         height: parent.height - 60

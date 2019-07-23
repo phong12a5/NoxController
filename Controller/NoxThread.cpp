@@ -40,7 +40,6 @@ void NoxThread::setNoxInstance()
         connect(m_workerThread, &QThread::finished, m_Worker, &NoxRunner::deleteLater);
         connect(this, &NoxThread::operate, m_Worker, &NoxRunner::run);
         connect(m_Worker, &NoxRunner::finished, this, &NoxThread::finishedATask);
-        connect(m_Worker, &NoxRunner::installedApp, this, &NoxThread::onInstalledApp);
         m_workerThread->start();
         emit this->operate();
     }
@@ -51,12 +50,4 @@ void NoxThread::finishedATask()
 {
     m_noxInstance->setIsRunning(false);
     emit missionCompleted(this);
-}
-
-void NoxThread::onInstalledApp()
-{
-    if(!m_noxInstance->installedApp()){
-        m_noxInstance->setInstalledApp(true);
-        APP_MODEL->saveConfig();
-    }
 }

@@ -25,7 +25,6 @@ public:
 
 signals:
     void finished();
-    void installedApp();
 
 public slots:
     void run();

@@ -11,6 +11,7 @@ AppModel::AppModel(QObject *parent) : QObject(parent)
     m_latestRunningInstance = -1;
     m_token = "00261f5687fee223f35e3c2080e167a8";
     m_initializing = false;
+    m_currentDir = "";
 }
 
 AppModel *AppModel::instance()
@@ -150,6 +151,17 @@ void AppModel::setInitializing(bool data)
         m_initializing = data;
         emit initializingChanged();
     }
+}
+
+QString AppModel::currentDir() const
+{
+    return m_currentDir;
+}
+
+void AppModel::setCurrentDir(QString data)
+{
+    m_currentDir = data;
+    LOG << m_currentDir;
 }
 
 void AppModel::startProgram()

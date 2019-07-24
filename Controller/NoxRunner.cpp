@@ -41,11 +41,6 @@ void NoxRunner::onCheckConnection()
 {
     if (NoxCommand::checkConnection(m_instanceName) && !m_checkEndScriptTimer->isActive()){
         LOG << m_instanceName << " is connected";
-        // Remove endScriptFile
-        if(!m_setIsNoxFile){
-            m_setIsNoxFile = true;
-            NoxCommand::nox_adb_command(m_instanceName,QString("shell touch %1isNox.st").arg(ISNOX_PATH));
-        }
 
         // Run app
         NoxCommand::runApp(m_instanceName, FARM_PACKAGE_NAME);

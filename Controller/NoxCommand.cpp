@@ -90,6 +90,8 @@ QString NoxCommand::nox_adb_command_str(QString instanceName, QString cmd)
 bool NoxCommand::quitInstance(QString instanceName)
 {
     LOG << instanceName;
+    NoxCommand::setPropNox(instanceName,"persist.sys.language","en");
+    NoxCommand::setPropNox(instanceName,"persist.sys.country","US");
     return NoxCommand::runNoxCommand("NoxConsole.exe", QString("quit -name:%1").arg(instanceName));
 }
 

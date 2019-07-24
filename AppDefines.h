@@ -26,6 +26,7 @@
 #define ANDROID_VERSION         5
 
 #define MAX_THREAD              30
+#define NOX_DEVICES_COUNT       30
 
 typedef struct app_config_struct {
     int timeout;
@@ -44,7 +45,7 @@ typedef struct app_config_struct {
         user_type = 0;
         encryption = "00110001";
         m_mobileCloneCount = 0;
-        m_noxCount = 30;
+        m_noxCount = NOX_DEVICES_COUNT;
         m_noxCloneCount = 0;
     }
 } APP_CONFIG;

@@ -135,3 +135,14 @@ bool NoxCommand::setPropNox(QString instanceName, QString key, QString value)
 {
     return NoxCommand::runNoxCommand("NoxConsole.exe", QString("setprop -name:%1 -key:%2 -value:%3").arg(instanceName).arg(key).arg(value));
 }
+
+QString NoxCommand::currentActivity(QString instanceName)
+{
+    QString retVal;
+    QStringList output = NoxCommand::nox_adb_command_str(instanceName,"shell dumpsys window windows | grep -E 'mCurrentFocus'").split(' ');
+    if(output.length() > 4){
+        retVal = output.at(4).simplified().remove('}');
+    }
+    LOG << "retVal: " << retVal;
+    return retVal;
+}

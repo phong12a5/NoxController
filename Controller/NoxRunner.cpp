@@ -43,7 +43,16 @@ void NoxRunner::onCheckConnection()
         LOG << m_instanceName << " is connected";
 
         // Run app
-        NoxCommand::runApp(m_instanceName, FARM_PACKAGE_NAME);
+        if(!isRunApp){
+            while ( !NoxCommand::currentActivity(m_instanceName).contains(FARM_PACKAGE_NAME)) {
+                NoxCommand::runApp(m_instanceName, FARM_PACKAGE_NAME);
+                delay(1000);
+            }
+            isRunApp = true;
+            LOG << "Run app successfully!";
+        }
+
+
 
         QString endScptNameFile = ENDSCRIPT_FILENAME;
         QString endScptNamePath = ENDSCRIPT_PATH + endScptNameFile;

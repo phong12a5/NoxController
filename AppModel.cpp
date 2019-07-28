@@ -119,8 +119,10 @@ QString AppModel::token() const
 
 void AppModel::setToken(QString data)
 {
-    if(m_token != data){
+    LOG << data;
+    if(m_token != data ){
         m_token = data;
+        emit saveConfig();
         emit tokenChanged();
     }
 }

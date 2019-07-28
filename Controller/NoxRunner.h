@@ -19,7 +19,7 @@ private:
     bool m_setIsNoxFile;
     QTimer *m_checkConnectionTimer;
     QTimer *m_checkEndScriptTimer;
-    bool isRunApp;
+    QTimer *m_checkRunAppTimer;
 
 public:
 
@@ -28,8 +28,10 @@ signals:
 
 public slots:
     void run();
+    void quitRunner();
     void onCheckConnection();
     void onCheckEnscript();
+    void onCheckRunApp();
 };
 
 #endif // NOXRUNNER_H

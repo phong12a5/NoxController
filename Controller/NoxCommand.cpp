@@ -7,7 +7,7 @@
 bool NoxCommand::runNoxCommand(QString binaryName, QString args)
 {
     QString cmd = QString("\"%1/%2\" %3").arg(APP_MODEL->noxIntallFolder()).arg(binaryName).arg(args);
-    LOG << cmd;
+//    LOG << cmd;
 
     QProcess process;
     process.setWorkingDirectory(APP_MODEL->noxIntallFolder());
@@ -144,5 +144,12 @@ QString NoxCommand::currentActivity(QString instanceName)
         retVal = output.at(4).simplified().remove('}');
     }
     LOG << "retVal: " << retVal;
+    return retVal;
+}
+
+bool NoxCommand::isAppRunning(QString instanceName)
+{
+    bool retVal = NoxCommand::nox_adb_command_str(instanceName,QString("shell ps | grep %1").arg(FARM_PACKAGE_NAME)).contains(FARM_PACKAGE_NAME);
+    LOG << retVal;
     return retVal;
 }

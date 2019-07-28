@@ -39,6 +39,10 @@ void AppMain::onLoadConfig()
     if(configFile.exists()){
         QJsonObject config = this->loadJson(CONFIG_FILE_NAME).object();
         APP_MODEL->setNoxIntallFolder(config[INSTALL_FOLDER_FIELD].toString(),true);
+
+        if(!config[TOKEN_PROP_KEY].toString().isEmpty())
+            APP_MODEL->setToken(config[TOKEN_PROP_KEY].toString());
+
         if(APP_MODEL->noxIntallFolder() == "")
         {
             LOG << "Nox installation folder has not set yet";
@@ -74,6 +78,7 @@ void AppMain::onSaveConfig()
     }
     config[INSTALL_FOLDER_FIELD] = APP_MODEL->noxIntallFolder();
     config[NOX_LIST_FIELD] = noxConfigList;
+    config[TOKEN_PROP_KEY] = APP_MODEL->token();
 
     this->saveJson(QJsonDocument(config),CONFIG_FILE_NAME);
 }
@@ -124,8 +129,17 @@ void AppMain::onStartProgram()
                             while(!NoxCommand::checkConnection("Device(1)"));
                             NoxCommand::nox_adb_command("Device(1)",QString("shell touch %1isNox.st").arg(ISNOX_PATH));
                             NoxCommand::runNoxCommand("nox_adb.exe", QString("install %1").arg(APP_MODEL->currentDir() + "/" + APK_FILENAME));
-                            NoxCommand::runApp("Device(1)", FARM_PACKAGE_NAME);
-                            delay(20000);
+                            while ( !NoxCommand::currentActivity("Device(1)").contains(FARM_PACKAGE_NAME)) {
+                                NoxCommand::runApp("Device(1)", FARM_PACKAGE_NAME);
+                                delay(5000);
+                            }
+
+                            QString output = NoxCommand::nox_adb_command_str("Device(1)",QString("shell [ -f %1 ] && echo true || echo false").arg(INITSCRIPT_FILENAME)).simplified();
+                            while(output != "true"){
+                                delay(1000);
+                                output = NoxCommand::nox_adb_command_str("Device(1)",QString("shell [ -f %1 ] && echo true || echo false").arg(INITSCRIPT_FILENAME)).simplified();
+                            }
+
                             NoxCommand::quitInstance("Device(1)");
                             while(NoxCommand::checkConnection("Device(1)"));
                         }
@@ -140,6 +154,7 @@ void AppMain::onStartProgram()
                 initDevicesList();
             }
         }
+        m_getAppConfig = true;
     }
 
     APP_MODEL->setInitializing(false);

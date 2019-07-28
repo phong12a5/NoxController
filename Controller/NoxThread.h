@@ -24,6 +24,7 @@ private:
 
 signals:
     void operate();
+    void quitThread();
     void missionCompleted(NoxThread*);
 
 public slots:

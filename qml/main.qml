@@ -105,7 +105,6 @@ Window {
                 font.pixelSize: 15
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
-                onTextChanged: AppModel.token = text
             }
         }
 
@@ -134,6 +133,7 @@ Window {
                 selected = !selected
                 if(selected){
                     AppModel.initializing = true
+                    AppModel.token = token.text
                     AppModel.startProgram()
                 }
                 else

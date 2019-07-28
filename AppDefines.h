@@ -16,12 +16,15 @@
 #define ISNOX_PATH              "/sdcard/DCIM/"
 #define ENDSCRIPT_PATH          "/sdcard/DCIM/"
 #define ENDSCRIPT_FILENAME      "endScript.st"
-#define APK_FILENAME            "android-build-debug.apk"
+#define INITSCRIPT_FILENAME     "/sdcard/DCIM/initApp.st"
+#define APK_FILENAME            "xyz.autofarmer.apk"
 
 #define INSTALL_FOLDER_FIELD    "installation_folder"
 #define NOX_LIST_FIELD          "devices_list_config"
+#define TOKEN_PROP_KEY          "farm_token"
 
 #define API_SERVER              "https://api.autofarmer.xyz/api/"
+
 
 #define ANDROID_VERSION         5
 

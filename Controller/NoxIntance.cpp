@@ -12,7 +12,7 @@ NoxIntance::NoxIntance(QObject *parent, QString instanceName, int indexOf) :
 
 NoxIntance::~NoxIntance()
 {
-    NoxCommand::quitInstance(this->instanceName());
+//    NoxCommand::quitInstance(this->instanceName());
 }
 
 QString NoxIntance::instanceName() const

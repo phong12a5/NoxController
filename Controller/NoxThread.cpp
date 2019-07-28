@@ -18,6 +18,7 @@ NoxThread::NoxThread(QObject *parent) : QObject(parent)
 NoxThread::~NoxThread()
 {
     LOG << m_noxInstance->instanceName();
+    emit quitThread();
     m_workerThread->quit();
     m_workerThread->wait();
     if(m_noxInstance) m_noxInstance->setIsRunning(false);
@@ -39,6 +40,7 @@ void NoxThread::setNoxInstance()
         m_Worker->moveToThread(m_workerThread);
         connect(m_workerThread, &QThread::finished, m_Worker, &NoxRunner::deleteLater);
         connect(this, &NoxThread::operate, m_Worker, &NoxRunner::run);
+        connect(this, &NoxThread::quitThread, m_Worker, &NoxRunner::quitRunner);
         connect(m_Worker, &NoxRunner::finished, this, &NoxThread::finishedATask);
         m_workerThread->start();
         emit this->operate();

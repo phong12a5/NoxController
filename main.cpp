@@ -6,10 +6,19 @@
 
 #include <functional>
 
+
+
 using namespace QtConcurrent;
 
 int main(int argc, char *argv[])
 {
+//#ifdef _WIN32
+//if (AttachConsole(ATTACH_PARENT_PROCESS)) {
+//    freopen("CONOUT$", "w", stdout);
+//    freopen("CONOUT$", "w", stderr);
+//}
+//#endif
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);

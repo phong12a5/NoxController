@@ -1,6 +1,7 @@
 #include "NoxCommand.h"
 #include "AppMain.h"
 #include <iostream>
+#include <QFile>
 
 #define APP_MODEL AppModel::instance()
 

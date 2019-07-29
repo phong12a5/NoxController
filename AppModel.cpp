@@ -1,5 +1,6 @@
 #include "AppModel.h"
 #include "AppMain.h"
+#include <QFile>
 
 AppModel* AppModel::m_instance = nullptr;
 
@@ -9,7 +10,7 @@ AppModel::AppModel(QObject *parent) : QObject(parent)
     m_amountOfThread = 1;
     m_isLaunchMutiTask = false;
     m_latestRunningInstance = -1;
-    m_token = "00261f5687fee223f35e3c2080e167a8";
+    m_token = "";
     m_initializing = false;
     m_currentDir = "";
 }

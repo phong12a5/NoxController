@@ -1,5 +1,6 @@
 #include "WebAPI.hpp"
 #include "AppModel.h"
+#include <QEventLoop>
 
 #define MODEL AppModel::instance()
 

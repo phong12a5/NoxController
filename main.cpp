@@ -2,22 +2,36 @@
 #include <QQmlApplicationEngine>
 #include "AppMain.h"
 #include <QtWidgets>
-#include <QtConcurrent>
-
-#include <functional>
 
 
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    QByteArray localMsg = msg.toLocal8Bit();
+    const char *file = context.file ? context.file : "";
+    const char *function = context.function ? context.function : "";
+    switch (type) {
+    case QtDebugMsg:
+        fprintf(stderr, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+        break;
+    case QtInfoMsg:
+        fprintf(stderr, "Info: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+        break;
+    case QtWarningMsg:
+        fprintf(stderr, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+        break;
+    case QtCriticalMsg:
+        fprintf(stderr, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+        break;
+    case QtFatalMsg:
+        fprintf(stderr, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+        break;
+    }
+}
 
-using namespace QtConcurrent;
 
 int main(int argc, char *argv[])
 {
-//#ifdef _WIN32
-//if (AttachConsole(ATTACH_PARENT_PROCESS)) {
-//    freopen("CONOUT$", "w", stdout);
-//    freopen("CONOUT$", "w", stderr);
-//}
-//#endif
+    qInstallMessageHandler(myMessageOutput);
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 

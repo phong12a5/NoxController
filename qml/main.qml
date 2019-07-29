@@ -105,7 +105,21 @@ Window {
                 font.pixelSize: 15
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
+                width: contentWidth > 200? contentWidth : 200
             }
+
+            Text {
+                id: hintText
+                text: qsTr("Enter token")
+                visible: token.text == ""
+                anchors.left: token.left
+                anchors.leftMargin: token.leftPadding
+                anchors.verticalCenter: token.verticalCenter
+                font.pixelSize: 15
+                color: "grey"
+                opacity: 0.2
+            }
+
         }
 
         ComboBox {

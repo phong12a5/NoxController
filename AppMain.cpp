@@ -1,6 +1,7 @@
 #include "AppMain.h"
 #include <QFile>
 #include <Communication/WebAPI.hpp>
+#include <QDir>
 
 #define APP_MODEL   AppModel::instance()
 #define APP_CTRL    AppController::instance()

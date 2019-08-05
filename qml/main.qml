@@ -142,6 +142,7 @@ Window {
             anchors.centerIn: parent
             width: 100
             height: 50
+            enabled: AppModel.token != ""
             text: selected? "Stop" : "Start"
             onClicked: {
                 selected = !selected

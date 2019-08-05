@@ -59,7 +59,13 @@ void NoxRunner::onCheckConnection()
 
         // Set token
         LOG << "Passing token id .. " << APP_MODEL->token();
-        NoxCommand::setPropNox(m_instanceName,TOKEN_PROP_KEY,QString("@%1@").arg(APP_MODEL->token()));
+        QString value, error;
+        while (!value.contains(APP_MODEL->token())) {
+            NoxCommand::setPropNox(m_instanceName,TOKEN_PROP_KEY,QString("@%1@").arg(APP_MODEL->token()));
+            NoxCommand::getPropNox(m_instanceName,TOKEN_PROP_KEY,value,error);
+            LOG << "value: " << value;
+            delay(3000);
+        }
 
         // Run app
         NoxCommand::runApp(m_instanceName, FARM_PACKAGE_NAME);

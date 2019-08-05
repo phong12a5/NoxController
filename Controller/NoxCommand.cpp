@@ -66,7 +66,8 @@ bool NoxCommand::addInstance(QString instanceName, int androidVersion)
 {
     LOG << instanceName;
     NoxCommand::runNoxCommand("NoxConsole.exe", QString("add -name:%1 -systemtype:%2").arg(instanceName).arg(androidVersion));
-    return NoxCommand::runNoxCommand("Nox.exe", QString("-name:%1 -root:true -screen:vertical -lang:en -locale:sg -screen:vertical -resolution:1080x1920 -dpi:480 -virtualKey:true -cpu:1 -quit").arg(instanceName));
+    NoxCommand::runNoxCommand("NoxConsole.exe", QString("modify -name:%1 -cpu:1 -memory:1204").arg(instanceName));
+    return NoxCommand::runNoxCommand("Nox.exe", QString("-name:%1 -root:true -screen:vertical -lang:en -locale:sg -screen:vertical -resolution:720x1280 -dpi:240 -virtualKey:true -quit").arg(instanceName));
 }
 
 bool NoxCommand::nox_adb_command(QString instanceName, QString cmd)
@@ -135,6 +136,11 @@ bool NoxCommand::coppyInstance(QString instanceName, QString fromInstanceName)
 bool NoxCommand::setPropNox(QString instanceName, QString key, QString value)
 {
     return NoxCommand::runNoxCommand("NoxConsole.exe", QString("setprop -name:%1 -key:%2 -value:%3").arg(instanceName).arg(key).arg(value));
+}
+
+bool NoxCommand::getPropNox(QString instanceName, QString key, QString &value, QString &error)
+{
+    return NoxCommand::runNoxCommand("NoxConsole.exe", QString("getprop -name:%1 -key:%2").arg(instanceName).arg(key),value,error);
 }
 
 QString NoxCommand::currentActivity(QString instanceName)

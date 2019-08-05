@@ -24,6 +24,7 @@ public:
     static bool checkConnection(QString instanceName);
     static bool coppyInstance(QString instanceName, QString fromInstanceName);
     static bool setPropNox(QString instanceName, QString key, QString value);
+    static bool getPropNox(QString instanceName, QString key, QString &value, QString &error);
     static QString currentActivity(QString instanceName);
     static bool isAppRunning(QString instanceName);
 

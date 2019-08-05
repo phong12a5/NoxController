@@ -127,12 +127,14 @@ void AppMain::onStartProgram()
                         NoxCommand::addInstance(QString("Device(%1)").arg(i),ANDROID_VERSION);
                         if(devicesNameList.isEmpty()){
                             NoxCommand::lunchInstance("Device(1)");
+
                             while(!NoxCommand::checkConnection("Device(1)"));
+
                             NoxCommand::nox_adb_command("Device(1)",QString("shell touch %1isNox.st").arg(ISNOX_PATH));
                             NoxCommand::runNoxCommand("nox_adb.exe", QString("install %1").arg(APP_MODEL->currentDir() + "/" + APK_FILENAME));
                             while ( !NoxCommand::currentActivity("Device(1)").contains(FARM_PACKAGE_NAME)) {
                                 NoxCommand::runApp("Device(1)", FARM_PACKAGE_NAME);
-                                delay(5000);
+                                delay(15000);
                             }
 
                             QString output = NoxCommand::nox_adb_command_str("Device(1)",QString("shell [ -f %1 ] && echo true || echo false").arg(INITSCRIPT_FILENAME)).simplified();

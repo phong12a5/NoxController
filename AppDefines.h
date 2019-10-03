@@ -23,6 +23,8 @@
 #define MAX_THREAD              30
 #define NOX_DEVICES_COUNT       30
 
+#define APP_DATA_FOLDER         "/data/data/xyz.autofarmer.app/"
+
 typedef struct app_config_struct {
     int timeout;
     int reset_3g;
